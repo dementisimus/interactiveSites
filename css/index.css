@@ -19,3 +19,28 @@
 .quill-wrap button, .quill-wrap .ql-picker {
     margin-right: 2px
 }
+
+#editor {
+    height: 375px;
+}
+
+#is-word {
+    margin-bottom: 5px;
+}
+
+#is-word.ql-active {
+    font-weight: bold;
+}
+
+.btn-primary {
+    margin-top: 10px;
+}
+
+.alert {
+    margin-top: 10px;
+    margin-bottom: 0px;
+}
+
+.alert-notext {
+    display: none;
+}
