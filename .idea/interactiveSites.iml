@@ -13,5 +13,9 @@
     <orderEntry type="library" name="index" level="application" />
     <orderEntry type="library" name="crypto-js" level="application" />
     <orderEntry type="library" name="58f97464c64b7e6255f30929d35c6e93" level="application" />
+    <orderEntry type="library" name="o" level="application" />
+    <orderEntry type="library" name="e" level="application" />
+    <orderEntry type="library" name="furtherJs" level="application" />
+    <orderEntry type="library" name="f" level="application" />
   </component>
 </module>

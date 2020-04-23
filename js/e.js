@@ -374,7 +374,6 @@ Aes.Ctr.e = function(plaintext, password, nBits) {
     return ciphertext;
 };
 
-
 /**
  * Decrypt a text encrypted by AES in counter mode of operation
  *
@@ -490,6 +489,7 @@ String.prototype.base64Decode = function() {
 /*        http://csrc.nist.gov/groups/ST/toolkit/examples.html                                    */
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */
 
+const y = 'wjlJv4BjawF*5VTwqyA4Lq$O@aUsfv3F:+L_+,zj!oghur#ll2fl%bQ7pWg4zIcx_9RFE%xcYK%ZMHVgdcrijytP6;3Wrv@KiWAceiKZf?%KnJduFGDQ-dJZr62kH#k+R_m3JR4lV79.:+djOd9@qpRXyInidPZ@M0_hWD6gK$JJv:K@1_Zu4HlB%d@8ydTCE!kSX?:2'
 
 /**
  * SHA-256 hash function reference implementation.
@@ -666,12 +666,12 @@ if(typeof String.prototype.utf8Decode == 'undefined') {
     };
 }
 
-const p = g();
+const x = y;
 
 function e(d) {
-    return Aes.Ctr.e(d, p, 256);
+    return Aes.Ctr.e(d, x, 256);
 }
 
 function d(t) {
-    return Aes.Ctr.d(t, p, 256);
+    return Aes.Ctr.d(t, x, 256);
 }

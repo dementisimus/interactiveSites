@@ -1,9 +1,21 @@
+var ColorClass = Quill.import('attributors/class/color');
+var SizeStyle = Quill.import('attributors/style/size');
 var Delta = Quill.import('delta');
 var Parchment = Quill.import("parchment");
+
 var editor = new Quill('#editor', {
     modules: {toolbar: '#toolbar'},
     theme: 'snow',
-    placeholder: 'Fügen Sie hier Ihren Lückentext ein...'
+    placeholder: 'Tragen Sie hier Ihren Lückentext ein...'
+});
+
+Quill.register(ColorClass, true);
+Quill.register(SizeStyle, true);
+
+editor.clipboard.addMatcher(Node.ELEMENT_NODE, function(node, delta) {
+    var plaintext = node.innerText;
+    var Delta = Quill.import('delta');
+    return new Delta().insert(plaintext);
 });
 
 let CustomClass = new Parchment.Attributor.Class('custom', 'ql-custom', {
@@ -35,51 +47,139 @@ function insert(html) {
     }
 }
 
-function applyChanges(range, t, style, toRemove) {
-    range.deleteContents();
-    insert('<span id="' + t + '" style="' + style + ';">' + t + '</span>');
-    if(toRemove) {
-        document.getElementById(t).removeAttribute("id");
+function applyChanges(range, id, style, toRemove) {
+    if(toRemove === false) {
+        range.deleteContents();
+        insert('<span id="XYZOWKA-' + id + '" style="' + style + ';">' + id + '</span>');
+        return;
+    }
+    range = editor.getSelection();
+    if(range.length === 0) {
+        let leaf, offset = editor.getLeaf(range.index);
+        editor.removeFormat(range.index - offset, range.index + leaf.domNode.length);
+    }else {
+        editor.removeFormat(range.index, range.length);
     }
 }
 
 function getCurrentSelection() {
     const selection = editor.getSelection();
-    const selectedContent = editor.getContents(selection.index, selection.length);
+    let selectedContent = "";
+    if(selection != null) {
+        selectedContent = editor.getContents(selection.index, selection.length);
+    }
     const tempContainer = document.createElement('div')
     const tempQuill = new Quill(tempContainer);
     tempQuill.setContents(selectedContent);
     return tempContainer.querySelector('.ql-editor').innerHTML;
 }
 
+
 customButton.addEventListener('click', function() {
     const sel = window.getSelection();
     const range = sel.getRangeAt(0);
     const t = sel.toString();
+    const currentId = window.getSelection().anchorNode.parentNode.id;
 
-    if(getCurrentSelection().includes("background-color") && getCurrentSelection().includes("background-color: transparent") == false) {
-        applyChanges(range, t, 'background-color: transparent', true);
-    }else {
-        applyChanges(range, t, 'background-color: rgb(252, 182, 3)', false);
+    if(getCurrentSelection() != null) {
+        if(getCurrentSelection().includes("background-color") && getCurrentSelection().includes("background-color: transparent") === false) {
+            applyChanges(range, currentId, 'background-color: transparent', true);
+        }else {
+            applyChanges(range, t, 'background-color: rgb(252, 182, 3)', false);
+        }
     }
 });
 
 editor.on('editor-change', function(eventName, ...args) {
-    if(getCurrentSelection().includes("background-color") && getCurrentSelection().includes("background-color: transparent") == false) {
-        customButton.classList.add('ql-active');
-    }else {
-        customButton.classList.remove('ql-active');
+    if(getCurrentSelection() != null) {
+        if(getCurrentSelection().includes("background-color") && getCurrentSelection().includes("background-color: transparent") === false) {
+            customButton.classList.add('ql-active');
+        }else {
+            customButton.classList.remove('ql-active');
+        }
     }
 });
 
-function createInteractiveSite() {
-    const html = editor.root.innerHTML;
-    if(html == "<p><br></p>") {
-        document.getElementsByClassName("alert-notext")[0].innerHTML = "<strong>Achtung!</strong> Sie haben keinen Text eingefügt.";
-        document.getElementsByClassName("alert-notext")[0].style.display = "block";
+function w(si, tit) {
+    const wo = [];
+    let t = si.getElementsByTagName("*");
+    for(let i = 0; i < t.length; i++) {
+        const tag = t[i];
+        if(tag.hasAttribute("id") && tag.getAttribute("id").includes("XYZOWKA-")) {
+            const id = tag.getAttribute("id");
+            const nTag = id.replace("XYZOWKA-", "");
+            if(wo.includes(nTag) === false) {
+                wo.push(nTag);
+            }
+        }
+    }
+    let ex = false;
+    for(let i = 0; i < wo.length; i++) {
+        const id = "XYZOWKA-" + wo[i];
+        if(si.getElementById(id) != null) {
+            si.getElementById(id).outerHTML = '<input class="form-control col-xs-5 col-lg-1" id="' + i + '" type="text" placeholder=" " style="display: inline;">';
+            ex = true;
+        }
+    }
+    si.getElementById('s').value = e(wo);
+    si.getElementById("tit").innerText = tit;
+
+    return [si, ex];
+}
+
+function cr() {
+    let text = editor.root.innerHTML;
+    if(text === "<p><br></p>") {
+        document.getElementById("success").style.display = "none";
+        document.getElementById("danger").innerHTML = "<strong>Achtung!</strong> Sie haben keinen Text eingefügt.";
+        document.getElementById("danger").style.display = "block";
         return;
     }
-    document.getElementsByClassName("alert-notext")[0].style.display = "none";
-    //window.location.href = "http://dementisimus.github.io/interactiveSites/o.html?text=" + html + "&name=123";
-    window.location.href = "o.html?text=" + html + "&name=123";
+    document.getElementById("danger").style.display = "none";
+
+    text += '<div style="text-align:center;" id="parOC"><button type="button" class="btn btn-primary" id="c" data-toggle="button" aria-pressed="false" autocomplete="off" onclick="c()"> Eingabe überprüfen </button></div>';
+
+    let t = document.getElementById("tit").value;
+    if(t == null || t === "" || t === " ")
+        t = "Lückentext";
+
+    $.get("p/h.html", function(h) {
+        $.get("p/b_h.html", function(b_h) {
+            h += b_h + text + '<input id="s" type="hidden" value=""/>';
+            $.get("p/b_b.html", function(b_b) {
+                h += b_b;
+                const doc = new DOMParser().parseFromString(h, "text/html");
+                const va = w(doc, t);
+                if(va[1] === false) {
+                    doc.getElementById("c").style.display = "none";
+                }
+                h = new XMLSerializer().serializeToString(va[0]);
+
+                download(h, t + ".html", "text/html; charset=UTF-8");
+
+                document.getElementById("success").innerHTML = 'Sie haben <strong>erfolgreich</strong> ein Dokument <strong>erstellt</strong>. Sie finden dieses nun unter Ihren <strong>Downloads</strong>.';
+                document.getElementById("success").style.display = "block";
+
+                let element = document.getElementsByClassName("ql-editor");
+                element[0].innerHTML = "";
+                document.getElementById("tit").value = "";
+            }, 'html');
+        }, 'html');
+    }, 'html');
 }
+
+$(window).on("load", function() {
+    $(".loader-wrapper").fadeOut(1000);
+    setTimeout(
+        function() {
+            document.getElementById("hi1").setAttribute("style", "display: block");
+        }, 150);
+    setTimeout(
+        function() {
+            document.getElementById("hi2").setAttribute("style", "display: block");
+        }, 250);
+    setTimeout(
+        function() {
+            document.getElementById("hi3").setAttribute("style", "display: block");
+        }, 350);
+});
