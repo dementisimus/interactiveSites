@@ -1,4 +1,4 @@
-### interactiveSites - Anleitung
+# interactiveSites - Anleitung
 
 1. <b>öffnen</b> Sie, falls noch nicht geöffnet, [diese Seite].
 2. <b>tippen</b> (<b>fügen</b>) Sie Ihren <b>Text</b> in das Feld ein. Sie können Ihren Text <b>beliebig</b>, mit den <b>Funktionen</b> in der <b>Liste</b> (<b>oben</b>), <b>gestalten</b>.
