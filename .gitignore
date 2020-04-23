@@ -1,0 +1,15 @@
+.idea
+.classpath
+.project
+.settings/
+build/
+out/
+bin/
+dist/
+manifest.mf
+*.iml
+*.ipr
+*.iws
+.idea/
+.DS_Store/
+*.log*
