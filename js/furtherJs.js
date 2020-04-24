@@ -57,7 +57,7 @@ function c() {
     const text = document.getElementById("codeBody").innerText;
     const s = document.getElementById("s").value;
     const decry = d(s);
-    const p = decry.split(",");
+    const p = StringToA(decry);
 
     let l = 0;
     let isEmpty = true;
@@ -121,5 +121,25 @@ function c() {
             document.getElementById(i.toString()).readOnly = true;
         }
     }
-
 }
+
+$(document).ready(function() {
+    let wor = '<p class="text-center mar-b-9">Lösungsvorschläge</p><div class="form-row justify-content-center">';
+    let wo_f = '</div><br>';
+
+
+    const h = document.getElementById("s").value;
+    let w = StringToA(d(h));
+
+    if((!(w.length === 0) && !(w[0] === ""))) {
+        w = shuffle(w);
+        for(let i = 0; i < w.length; i++) {
+            const wo = w[i];
+            if(document.getElementById(i.toString()) != null && typeof (document.getElementById(i.toString())) != "undefined") {
+                wor += '<div class="col-1"> <input type="text" class="form-control" placeholder="' + wo + '" readonly size="20"> </div>';
+            }
+        }
+        document.getElementById("words").style.display = "block";
+        document.getElementById("words").innerHTML = wor + wo_f;
+    }
+});

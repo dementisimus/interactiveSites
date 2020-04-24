@@ -121,7 +121,7 @@ function w(si, tit) {
             ex = true;
         }
     }
-    si.getElementById('s').value = e(wo);
+    si.getElementById("s").value = e(aToString(wo));
     si.getElementById("tit").innerText = tit;
 
     return [si, ex];
@@ -145,7 +145,7 @@ function cr() {
 
     $.get("p/h.html", function(h) {
         $.get("p/b_h.html", function(b_h) {
-            h += b_h + text + '<input id="s" type="hidden" value=""/>';
+            h += b_h + '<div class="text-center hidden" id="words"></div>' + "<div id='teHo'>" + text + '<input id="s" type="hidden" value=""/>' + "</div>";
             $.get("p/b_b.html", function(b_b) {
                 h += b_b;
                 const doc = new DOMParser().parseFromString(h, "text/html");
@@ -163,6 +163,7 @@ function cr() {
                 let element = document.getElementsByClassName("ql-editor");
                 element[0].innerHTML = "";
                 document.getElementById("tit").value = "";
+                document.getElementById("success-uplo").style.display = "none";
             }, 'html');
         }, 'html');
     }, 'html');
@@ -182,4 +183,49 @@ $(window).on("load", function() {
         function() {
             document.getElementById("hi3").setAttribute("style", "display: block");
         }, 350);
+});
+
+function upl() {
+    document.getElementById("success-uplo").style.display = "none";
+    document.getElementById("fiIn").style.display = "block";
+    document.getElementById("or").setAttribute("class", "text-center mar-10");
+    const f = document.getElementById("fi").files;
+    document.getElementById("cFl").innerText = f[0].name;
+}
+
+function rea() {
+    const f = document.getElementById("fi").files;
+    const reader = new FileReader();
+    reader.addEventListener('load', function() {
+        const doc = new DOMParser().parseFromString(this.result, "text/html");
+        doc.getElementById("parOC").remove();
+
+        const h = doc.getElementById("s").value;
+        const w = StringToA(d(h));
+
+        for(let i = 0; i < w.length; i++) {
+            const wo = w[i];
+            if(doc.getElementById(i.toString()) != null && typeof (doc.getElementById(i.toString())) != "undefined") {
+                doc.getElementById(i.toString()).outerHTML = '<span id="XYZOWKA-' + wo + '" style="background-color: rgb(252, 182, 3);">' + wo + '</span>';
+            }
+        }
+
+        doc.getElementById("s").remove();
+        editor.root.innerHTML = doc.getElementById("teHo").innerHTML;
+        document.getElementById("fi").value = "";
+        document.getElementById("cFl").innerText = "Datei auswählen";
+        document.getElementById("fiIn").style.display = "none";
+        document.getElementById("or").setAttribute("class", "text-center");
+        document.getElementById("success-uplo").innerHTML = "Sie können nun Ihre Datei bearbeiten.";
+        document.getElementById("success-uplo").style.display = "block";
+        document.getElementById("danger").style.display = "none";
+        document.getElementById("success").style.display = "none";
+    });
+    reader.readAsText(f[0]);
+}
+
+$(document).ready(function() {
+    $('input[type="file"]').on("change", function() {
+        upl();
+    });
 });

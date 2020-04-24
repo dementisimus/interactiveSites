@@ -10,6 +10,12 @@
     display: none;
 }
 
+.btn-ext {
+    font-size: 16px !important;
+}
+
+.custom-file-label::after {content: 'suchen' !important;}
+
 #hidden {
     display: none;
 }
@@ -22,8 +28,16 @@
     margin-top: 5px;
 }
 
+.mar-10 {
+    margin-top: 10px;
+}
+
 .mar-20 {
     margin-top: 20px;
+}
+
+.mar-b-9 {
+    margin-bottom: 9px;
 }
 
 #codeBody {

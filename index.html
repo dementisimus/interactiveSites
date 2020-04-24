@@ -21,6 +21,31 @@
         href="http://github.com/dementisimus/interactiveSites/blob/master/README.md" target="_blank">Anleitung</a></h2>
 
 <div class="quill-wrap hidden" id="hi3">
+
+    <form enctype="multipart/form-data" method="post">
+        <div class="form-group">
+            <p class="text-center"><strong>Text aus .html-Datei extrahieren</strong></p>
+            <div class="custom-file">
+                <input accept=".html" class="custom-file-input form-control" id="fi" name="files[]" type="file"> <label
+                    class="custom-file-label text-center" for="fi" id="cFl">Datei auswählen</label>
+            </div>
+        </div>
+    </form>
+
+    <div class="alert alert-success alert-notext text-center hidden" id="success-uplo"></div>
+
+    <div class="row hidden" id="fiIn">
+        <div class="col-sm-12">
+            <div class="text-center">
+                <button class="btn btn-danger btn-xlg waves-effect waves-light btn-ext"
+                        onclick="rea()"> Text extrahieren
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <p class="text-center" id="or"><strong>―― oder ――</strong></p>
+
     <div id="toolbar">
       <span class="ql-formats">
         <select class="ql-header">
