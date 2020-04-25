@@ -1,0 +1,92 @@
+﻿<!doctype html>
+<html>
+
+<head>
+    <title>JavaScript multi-language localisation example</title>
+    <link href="style.css" rel="stylesheet"/>
+</head>
+<script src="multilang.js" type="text/javascript"></script>
+<script type="text/javascript">
+    var multilang;
+
+    function onLoad() {
+        // create object, load JSON file, default to 'nl', and callback to initList when ready loading
+        multilang = new MultiLang('languages.json', 'nl', this.initList);
+
+        // alternatively
+        //multilang = new MultiLang('languages.json', null, this.initList); // default to browser language
+        //multilang = new MultiLang('languages.json'); // only load JSON, no callback
+    }
+
+    function langSelectChange(sel) {
+        // switch to selected language code
+        multilang.setLanguage(sel.value);
+
+        // refresh labels
+        refreshLabels();
+    }
+
+    function initList() {
+        // get language list element
+        var list = document.getElementsByName("listlanguages")[0];
+        // clear all options
+        list.options.length = 0;
+
+        // add all available languages
+        for(var key in multilang.phrases) {
+            // create new language option
+            var lang = document.createElement("option");
+            lang.value = key;
+            lang.innerHTML = multilang.phrases[key]['langdesc'];
+
+            // append to select element
+            list.appendChild(lang);
+        }
+
+        refreshLabels();
+    }
+
+    function refreshLabels() {
+
+        // Basically do the following for all document elements:
+        //document.getElementById("Options").textContent = multilang.get("Options");
+
+        // loop through all document elements
+        var allnodes = document.body.getElementsByTagName("*");
+
+        for(var i = 0, max = allnodes.length; i < max; i++) {
+            // get id current elements
+            var idname = allnodes[i].id;
+            // if id exists, set get id current elements
+            if(idname != '') {
+                allnodes[i].textContent = multilang.get(idname);
+            }
+        }
+    }
+</script>
+<body onload="onLoad()">
+Select language from list to switch between translations: <select name="listlanguages"
+                                                                  onchange="langSelectChange(this)"> </select><br/>
+
+<div>
+    <div class="bl" id="Start">Start game</div>
+    <div class="bl" id="Sound">Sound</div>
+    <div class="bl" id="Editor">Editor</div>
+    <div class="bl" id="Music">Music</div>
+    <div class="bl" id="Options">Options</div>
+</div>
+<br>
+<div>
+    <a id="Reset game">Reset game</a><br/>
+    <div class="rd" id="No">no</div>
+    <div class="gr" id="Yes">yes</div>
+</div>
+<br>
+<div>
+    <a id="Credits1">Credits1</a> Harry<br/> <a id="Credits2">Credits2</a> Dick<br/> <a
+        id="Credits3">Credits3</a> Tom<br/>
+</div>
+<br>
+<div id="EndText">End text</div>
+</body>
+</html>
