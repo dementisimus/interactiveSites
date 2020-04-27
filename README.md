@@ -7,4 +7,4 @@
 5. sollten Sie mit Ihrem Text <b>fertig</b> sein, können Sie auf "<b>INTERAKTIVE SEITE ERSTELLEN</b>" <b>klicken</b>.
 6. Ihre soeben <b>erstelle Seite</b> wird nun für Sie <b>vorbereitet</b> und im Anschluss daran <b>gedownloadet</b>. Sie werden die <b>Datei</b> im <b>Download-Ordner</b> <b>finden</b>.
 
-[diese Seite]: http://dementisimus.github.io/interactiveSites/
+[diese Seite]: http://interactive-sites.grabner-stefan-johannes.dev/
