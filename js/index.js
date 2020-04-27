@@ -195,6 +195,7 @@ function upl() {
 
 function rea() {
     const f = document.getElementById("fi").files;
+    const na = f[0].name.split(".html")[0];
     const reader = new FileReader();
     reader.addEventListener('load', function() {
         const doc = new DOMParser().parseFromString(this.result, "text/html");
@@ -220,6 +221,7 @@ function rea() {
         document.getElementById("success-uplo").style.display = "block";
         document.getElementById("danger").style.display = "none";
         document.getElementById("success").style.display = "none";
+        document.getElementById("tit").value = na;
     });
     reader.readAsText(f[0]);
 }
